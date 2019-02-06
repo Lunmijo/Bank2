@@ -5,17 +5,17 @@ import javax.persistence.*;
 @Entity
 @Table(name = "Bank_Accounts", schema = "public", catalog = "Bank")
 public class BankAccountsEntity {
-    private int id;
+    private Integer id;
     private Object currency;
-    private double avaliableMoney;
+    private Double avaliableMoney;
 
     @Id
     @Column(name = "ID", nullable = false)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -31,11 +31,11 @@ public class BankAccountsEntity {
 
     @Basic
     @Column(name = "AvaliableMoney", nullable = false, precision = 0)
-    public double getAvaliableMoney() {
+    public Double getAvaliableMoney() {
         return avaliableMoney;
     }
 
-    public void setAvaliableMoney(double avaliableMoney) {
+    public void setAvaliableMoney(Double avaliableMoney) {
         this.avaliableMoney = avaliableMoney;
     }
 
@@ -46,21 +46,19 @@ public class BankAccountsEntity {
 
         BankAccountsEntity that = (BankAccountsEntity) o;
 
-        if (id != that.id) return false;
-        if (Double.compare(that.avaliableMoney, avaliableMoney) != 0) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
+        if (avaliableMoney != null ? !avaliableMoney.equals(that.avaliableMoney) : that.avaliableMoney != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        temp = Double.doubleToLongBits(avaliableMoney);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (avaliableMoney != null ? avaliableMoney.hashCode() : 0);
         return result;
     }
 }

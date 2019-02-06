@@ -6,20 +6,18 @@ import java.sql.Date;
 @Entity
 @Table(name = "Transactions", schema = "public", catalog = "Bank")
 public class TransactionsEntity {
-    private int id;
+    private Integer id;
     private Object currency;
-    private double sum;
+    private Double sum;
     private Date currencyRateDay;
-    private BankAccountsEntity bankAccountsByFromAccountId;
-    private BankAccountsEntity bankAccountsByToAccountId;
 
     @Id
     @Column(name = "ID", nullable = false)
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -35,11 +33,11 @@ public class TransactionsEntity {
 
     @Basic
     @Column(name = "Sum", nullable = false, precision = 0)
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
@@ -60,9 +58,9 @@ public class TransactionsEntity {
 
         TransactionsEntity that = (TransactionsEntity) o;
 
-        if (id != that.id) return false;
-        if (Double.compare(that.sum, sum) != 0) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
+        if (sum != null ? !sum.equals(that.sum) : that.sum != null) return false;
         if (currencyRateDay != null ? !currencyRateDay.equals(that.currencyRateDay) : that.currencyRateDay != null)
             return false;
 
@@ -71,33 +69,10 @@ public class TransactionsEntity {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = id;
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        temp = Double.doubleToLongBits(sum);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (sum != null ? sum.hashCode() : 0);
         result = 31 * result + (currencyRateDay != null ? currencyRateDay.hashCode() : 0);
         return result;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "FromAccountID", referencedColumnName = "ID", nullable = false)
-    public Entity.BankAccountsEntity getBankAccountsByFromAccountId() {
-        return bankAccountsByFromAccountId;
-    }
-
-    public void setBankAccountsByFromAccountId(Entity.BankAccountsEntity bankAccountsByFromAccountId) {
-        this.bankAccountsByFromAccountId = bankAccountsByFromAccountId;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "ToAccountID", referencedColumnName = "ID", nullable = false)
-    public Entity.BankAccountsEntity getBankAccountsByToAccountId() {
-        return bankAccountsByToAccountId;
-    }
-
-    public void setBankAccountsByToAccountId(Entity.BankAccountsEntity bankAccountsByToAccountId) {
-        this.bankAccountsByToAccountId = bankAccountsByToAccountId;
     }
 }
