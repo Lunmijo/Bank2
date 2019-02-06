@@ -10,7 +10,8 @@
       <mapping class="Entity.CurrentRatesEntity"/>
       <mapping class="Entity.TransactionsEntity"/>
       <mapping class="Entity.UsersEntity"/>
-      <!-- <property name="connection.username"/> -->
+    <mapping class="Entity.CurrencyRatesEntity"/>
+    <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
     <!-- DB schema will be updated if needed -->

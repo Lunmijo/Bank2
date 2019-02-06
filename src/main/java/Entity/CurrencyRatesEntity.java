@@ -1,86 +1,96 @@
 package Entity;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
-@Table(name = "Current_Rates", schema = "public", catalog = "Bank")
-public class CurrentRatesEntity {
-    private Date date;
-    private Object uaHtoUsd;
-    private Object uaHtoEur;
-    private Object usDtoUah;
-    private Object euRtoUah;
-    private Object euRtoUsd;
-    private Object usDtoEur;
+@Table(name = "Currency_Rates", schema = "public", catalog = "Bank")
+public class CurrencyRatesEntity {
+    private String date;
+    private Long id;
+    private Double uaHtoUsd;
+    private Double uaHtoEur;
+    private Double usDtoUah;
+    private Double euRtoUah;
+    private Double euRtoUsd;
+    private Double usDtoEur;
 
-    @Id
-    @Column(name = "Date", nullable = false)
-    public Date getDate() {
+    @Basic
+    @Column(name = "Date", nullable = false, length = -1)
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
+    @Id
+    @Column(name = "ID", nullable = false)
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Basic
-    @Column(name = "UAHtoUSD", nullable = false)
-    public Object getUaHtoUsd() {
+    @Column(name = "UAHtoUSD", nullable = false, precision = 0)
+    public Double getUaHtoUsd() {
         return uaHtoUsd;
     }
 
-    public void setUaHtoUsd(Object uaHtoUsd) {
+    public void setUaHtoUsd(Double uaHtoUsd) {
         this.uaHtoUsd = uaHtoUsd;
     }
 
     @Basic
-    @Column(name = "UAHtoEUR", nullable = false)
-    public Object getUaHtoEur() {
+    @Column(name = "UAHtoEUR", nullable = false, precision = 0)
+    public Double getUaHtoEur() {
         return uaHtoEur;
     }
 
-    public void setUaHtoEur(Object uaHtoEur) {
+    public void setUaHtoEur(Double uaHtoEur) {
         this.uaHtoEur = uaHtoEur;
     }
 
     @Basic
-    @Column(name = "USDtoUAH", nullable = false)
-    public Object getUsDtoUah() {
+    @Column(name = "USDtoUAH", nullable = false, precision = 0)
+    public Double getUsDtoUah() {
         return usDtoUah;
     }
 
-    public void setUsDtoUah(Object usDtoUah) {
+    public void setUsDtoUah(Double usDtoUah) {
         this.usDtoUah = usDtoUah;
     }
 
     @Basic
-    @Column(name = "EURtoUAH", nullable = false)
-    public Object getEuRtoUah() {
+    @Column(name = "EURtoUAH", nullable = false, precision = 0)
+    public Double getEuRtoUah() {
         return euRtoUah;
     }
 
-    public void setEuRtoUah(Object euRtoUah) {
+    public void setEuRtoUah(Double euRtoUah) {
         this.euRtoUah = euRtoUah;
     }
 
     @Basic
-    @Column(name = "EURtoUSD", nullable = false)
-    public Object getEuRtoUsd() {
+    @Column(name = "EURtoUSD", nullable = false, precision = 0)
+    public Double getEuRtoUsd() {
         return euRtoUsd;
     }
 
-    public void setEuRtoUsd(Object euRtoUsd) {
+    public void setEuRtoUsd(Double euRtoUsd) {
         this.euRtoUsd = euRtoUsd;
     }
 
     @Basic
-    @Column(name = "USDtoEUR", nullable = false)
-    public Object getUsDtoEur() {
+    @Column(name = "USDtoEUR", nullable = false, precision = 0)
+    public Double getUsDtoEur() {
         return usDtoEur;
     }
 
-    public void setUsDtoEur(Object usDtoEur) {
+    public void setUsDtoEur(Double usDtoEur) {
         this.usDtoEur = usDtoEur;
     }
 
@@ -89,9 +99,10 @@ public class CurrentRatesEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CurrentRatesEntity that = (CurrentRatesEntity) o;
+        CurrencyRatesEntity that = (CurrencyRatesEntity) o;
 
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (uaHtoUsd != null ? !uaHtoUsd.equals(that.uaHtoUsd) : that.uaHtoUsd != null) return false;
         if (uaHtoEur != null ? !uaHtoEur.equals(that.uaHtoEur) : that.uaHtoEur != null) return false;
         if (usDtoUah != null ? !usDtoUah.equals(that.usDtoUah) : that.usDtoUah != null) return false;
@@ -105,6 +116,7 @@ public class CurrentRatesEntity {
     @Override
     public int hashCode() {
         int result = date != null ? date.hashCode() : 0;
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         result = 31 * result + (uaHtoUsd != null ? uaHtoUsd.hashCode() : 0);
         result = 31 * result + (uaHtoEur != null ? uaHtoEur.hashCode() : 0);
         result = 31 * result + (usDtoUah != null ? usDtoUah.hashCode() : 0);

@@ -9,6 +9,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Welcome to the Bank!");
         while(true) {
+            System.out.println(" ");
+            System.out.println(" ");
+            System.out.println(" ");
             System.out.println("Enter command or help to see available commands");
             if (scanner.nextLine().equals("help")) {
                 System.out.println("add - add a bank account");

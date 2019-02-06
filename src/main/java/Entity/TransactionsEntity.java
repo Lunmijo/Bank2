@@ -1,15 +1,16 @@
 package Entity;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Table(name = "Transactions", schema = "public", catalog = "Bank")
 public class TransactionsEntity {
     private Integer id;
-    private Object currency;
+    private String currency;
     private Double sum;
-    private Date currencyRateDay;
+    private String currencyRateDay;
+    private BankAccountsEntity bankAccountsByFromAccountId;
+    private BankAccountsEntity bankAccountsByToAccountId;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -22,12 +23,12 @@ public class TransactionsEntity {
     }
 
     @Basic
-    @Column(name = "Currency", nullable = false)
-    public Object getCurrency() {
+    @Column(name = "Currency", nullable = false, length = -1)
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Object currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
@@ -42,12 +43,12 @@ public class TransactionsEntity {
     }
 
     @Basic
-    @Column(name = "CurrencyRateDay", nullable = false)
-    public Date getCurrencyRateDay() {
+    @Column(name = "CurrencyRateDay", nullable = false, length = -1)
+    public String getCurrencyRateDay() {
         return currencyRateDay;
     }
 
-    public void setCurrencyRateDay(Date currencyRateDay) {
+    public void setCurrencyRateDay(String currencyRateDay) {
         this.currencyRateDay = currencyRateDay;
     }
 
@@ -74,5 +75,25 @@ public class TransactionsEntity {
         result = 31 * result + (sum != null ? sum.hashCode() : 0);
         result = 31 * result + (currencyRateDay != null ? currencyRateDay.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "FromAccountID", referencedColumnName = "ID", nullable = false)
+    public BankAccountsEntity getBankAccountsByFromAccountId() {
+        return bankAccountsByFromAccountId;
+    }
+
+    public void setBankAccountsByFromAccountId(BankAccountsEntity bankAccountsByFromAccountId) {
+        this.bankAccountsByFromAccountId = bankAccountsByFromAccountId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "ToAccountID", referencedColumnName = "ID", nullable = false)
+    public BankAccountsEntity getBankAccountsByToAccountId() {
+        return bankAccountsByToAccountId;
+    }
+
+    public void setBankAccountsByToAccountId(BankAccountsEntity bankAccountsByToAccountId) {
+        this.bankAccountsByToAccountId = bankAccountsByToAccountId;
     }
 }

@@ -8,6 +8,9 @@ public class UsersEntity {
     private Integer id;
     private String firstName;
     private String lastName;
+    private BankAccountsEntity bankAccountsByBankUahAccountId;
+    private BankAccountsEntity bankAccountsByBankEurAccountId;
+    private BankAccountsEntity bankAccountsByBankUsdAccountId;
 
     @Id
     @Column(name = "ID", nullable = false)
@@ -59,5 +62,35 @@ public class UsersEntity {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "BankUAHAccountID", referencedColumnName = "ID")
+    public BankAccountsEntity getBankAccountsByBankUahAccountId() {
+        return bankAccountsByBankUahAccountId;
+    }
+
+    public void setBankAccountsByBankUahAccountId(BankAccountsEntity bankAccountsByBankUahAccountId) {
+        this.bankAccountsByBankUahAccountId = bankAccountsByBankUahAccountId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "BankEURAccountID", referencedColumnName = "ID")
+    public BankAccountsEntity getBankAccountsByBankEurAccountId() {
+        return bankAccountsByBankEurAccountId;
+    }
+
+    public void setBankAccountsByBankEurAccountId(BankAccountsEntity bankAccountsByBankEurAccountId) {
+        this.bankAccountsByBankEurAccountId = bankAccountsByBankEurAccountId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "BankUSDAccountID", referencedColumnName = "ID")
+    public BankAccountsEntity getBankAccountsByBankUsdAccountId() {
+        return bankAccountsByBankUsdAccountId;
+    }
+
+    public void setBankAccountsByBankUsdAccountId(BankAccountsEntity bankAccountsByBankUsdAccountId) {
+        this.bankAccountsByBankUsdAccountId = bankAccountsByBankUsdAccountId;
     }
 }
