@@ -13,7 +13,8 @@ public class Main {
             System.out.println(" ");
             System.out.println(" ");
             System.out.println("Enter command or help to see available commands");
-            if (scanner.nextLine().equals("help")) {
+            String command = scanner.nextLine();
+            if (command.equals("help")) {
                 System.out.println("add - add a bank account");
                 System.out.println("view account - view your account information");
                 System.out.println("transfer money - transfer your money to some bank account");
@@ -22,28 +23,28 @@ public class Main {
                 System.out.println("check history - get bank account history");
                 System.out.println("check rates - check current currency rates");
             }
-            else if (scanner.nextLine().equals("add")) {
+            else if (command.equals("add")) {
                 bankAccountsUtil.add();
             }
-            else if(scanner.nextLine().equals("view account")) {
+            else if(command.equals("view account")) {
                 bankAccountsUtil.viewAccount();
             }
-            else if(scanner.nextLine().equals("transfer money")) {
+            else if(command.equals("transfer money")) {
                 bankAccountsUtil.transferMoney();
             }
-            else if(scanner.nextLine().equals("deposit")) {
+            else if(command.equals("deposit")) {
                 bankAccountsUtil.depositFunds();
             }
-            else if(scanner.nextLine().equals("withdraw")) {
+            else if(command.equals("withdraw")) {
                 bankAccountsUtil.withdrawFunds();
             }
-            else if(scanner.nextLine().equals("check history")) {
+            else if(command.equals("check history")) {
                 bankAccountsUtil.checkTransactionsHistory();
             }
-            else if(scanner.nextLine().equals("check rates")) {
+            else if(command.equals("check rates")) {
                 bankAccountsUtil.checkRates();
             }
-            else if(scanner.nextLine().equals("exit")) {
+            else if(command.equals("exit")) {
                 break;
             }
             else {

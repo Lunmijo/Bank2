@@ -1,5 +1,3 @@
-package Entity;
-
 import javax.persistence.*;
 
 @Entity
@@ -8,6 +6,8 @@ public class TransactionsEntity {
     private long id;
     private double sum;
     private String currency;
+    private BankAccountsEntity bankAccountsByFromid;
+    private BankAccountsEntity bankAccountsByToid;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -62,5 +62,25 @@ public class TransactionsEntity {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "fromid", referencedColumnName = "id", nullable = false)
+    public BankAccountsEntity getBankAccountsByFromid() {
+        return bankAccountsByFromid;
+    }
+
+    public void setBankAccountsByFromid(BankAccountsEntity bankAccountsByFromid) {
+        this.bankAccountsByFromid = bankAccountsByFromid;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "toid", referencedColumnName = "id")
+    public BankAccountsEntity getBankAccountsByToid() {
+        return bankAccountsByToid;
+    }
+
+    public void setBankAccountsByToid(BankAccountsEntity bankAccountsByToid) {
+        this.bankAccountsByToid = bankAccountsByToid;
     }
 }

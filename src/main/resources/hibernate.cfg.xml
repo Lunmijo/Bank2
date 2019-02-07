@@ -7,10 +7,9 @@
     <property name="connection.url">jdbc:postgresql://localhost:5432/Bank</property>
     <property name="connection.driver_class">org.postgresql.Driver</property>
     <mapping class="Entity.BankAccountsEntity"/>
-      <mapping class="Entity.CurrentRatesEntity"/>
-      <mapping class="Entity.TransactionsEntity"/>
-      <mapping class="Entity.UsersEntity"/>
-    <mapping class="Entity.CurrencyRatesEntity"/>
+    <mapping class="Entity.CurrencyratesEntity"/>
+    <mapping class="Entity.TransactionsEntity"/>
+    <mapping class="Entity.UsersEntity"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 
