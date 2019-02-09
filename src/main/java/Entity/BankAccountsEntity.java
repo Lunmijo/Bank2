@@ -12,7 +12,8 @@ public class BankAccountsEntity {
     private String currency;
     private double availablemoney;
 
-    public BankAccountsEntity() { }
+    public BankAccountsEntity() {
+    }
 
     public BankAccountsEntity(String currency) {
         this.currency = currency;

@@ -16,7 +16,8 @@ public class UsersEntity {
     private Long accountusd;
     private Long accounteur;
 
-    public UsersEntity() { }
+    public UsersEntity() {
+    }
 
     public UsersEntity(String firstname, String lastname) {
         this.firstname = firstname;
