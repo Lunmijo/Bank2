@@ -57,9 +57,11 @@ public class UsersUtil {
     public static UsersEntity findUser(long ID) {
         Query query = Manager.getEm().createQuery("SELECT user FROM UsersEntity user WHERE id = ?1", UsersEntity.class);
         query.setParameter(1, ID);
-
-        ArrayList<UsersEntity> users = (ArrayList<UsersEntity>) query.getResultList();
-        return users.get(0);
+        ArrayList<UsersEntity> result = (ArrayList<UsersEntity>) query.getResultList();
+        if (result.size() > 0) {
+            return result.get(0);
+        }
+        return null;
     }
 
     public static String returnUserInfo(UsersEntity user) {
@@ -96,9 +98,9 @@ public class UsersUtil {
         return false;
     }
 
-    public static void viewInfo() {
+    public static String viewInfo() {
         long id = UsersUtil.getUserID();
         UsersEntity user = UsersUtil.findUser(id);
-        UsersUtil.returnUserInfo(user);
+        return UsersUtil.returnUserInfo(user);
     }
 }

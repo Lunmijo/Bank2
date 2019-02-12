@@ -15,6 +15,9 @@ public class Main {
                 System.out.println("Please login first");
                 isLogin = ConsoleEntrance.entrance();
             }
+            if (UsersUtil.getUserID() == -1) {
+                isLogin = false;
+            }
 
             System.out.println(" ");
             System.out.println("Enter command or help to see available commands");
@@ -24,12 +27,13 @@ public class Main {
             if (command.equals("help")) {
                 System.out.println("add account - add a bank account");
                 System.out.println("view account - view your account information");
-                System.out.println("info - get your user account info");
+                System.out.println("my info - get your user account info");
                 System.out.println("transfer money - transfer your money to some bank account");
                 System.out.println("deposit - addBankAccount money to your account");
                 System.out.println("withdraw - withdraw money from your account");
                 System.out.println("check history - get bank account history");
                 System.out.println("check rates - check current currency rates");
+                System.out.println("convert money - to convert money from one your account to other");
                 System.out.println("exit - to close the program");
             }
             else if (command.equals("add account")) {
@@ -39,7 +43,7 @@ public class Main {
                 ConsoleOperations.viewAccount(); //added
             }
             else if (command.equals("my info")) {
-                UsersUtil.viewInfo(); //added
+                ConsoleOperations.viewInfo(); //added
             }
             else if(command.equals("transfer money")) {
                 ConsoleOperations.transferMoney(); //added
@@ -51,10 +55,10 @@ public class Main {
                 ConsoleOperations.withdrawFunds(); //added
             }
             else if(command.equals("check history")) {
-                ConsoleOperations.checkTransactionsHistory();
+                ConsoleOperations.checkTransactionsHistory(); //added
             }
             else if(command.equals("check rates")) {
-                ConsoleOperations.checkRates();
+                ConsoleOperations.checkRates(); //added
             }
             else if (command.equals("convert money")) {
                 ConsoleOperations.convertMoney();

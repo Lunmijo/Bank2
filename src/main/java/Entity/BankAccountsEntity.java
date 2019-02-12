@@ -1,19 +1,21 @@
 package Entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "bank_accounts", schema = "public", catalog = "Bank")
 public class BankAccountsEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
     private long id;
     private String currency;
     private double availablemoney;
+    private Collection<TransactionsEntity> transactionsById;
+    private Collection<TransactionsEntity> transactionsById_0;
+    private Collection<UsersEntity> usersById;
+    private Collection<UsersEntity> usersById_0;
+    private Collection<UsersEntity> usersById_1;
 
-    public BankAccountsEntity() {
-    }
+    public BankAccountsEntity() { }
 
     public BankAccountsEntity(String currency) {
         this.currency = currency;
@@ -74,5 +76,50 @@ public class BankAccountsEntity {
         temp = Double.doubleToLongBits(availablemoney);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @OneToMany(mappedBy = "bankAccountsBySender")
+    public Collection<TransactionsEntity> getTransactionsById() {
+        return transactionsById;
+    }
+
+    public void setTransactionsById(Collection<TransactionsEntity> transactionsById) {
+        this.transactionsById = transactionsById;
+    }
+
+    @OneToMany(mappedBy = "bankAccountsByReceiver")
+    public Collection<TransactionsEntity> getTransactionsById_0() {
+        return transactionsById_0;
+    }
+
+    public void setTransactionsById_0(Collection<TransactionsEntity> transactionsById_0) {
+        this.transactionsById_0 = transactionsById_0;
+    }
+
+    @OneToMany(mappedBy = "bankAccountsByAccountuah")
+    public Collection<UsersEntity> getUsersById() {
+        return usersById;
+    }
+
+    public void setUsersById(Collection<UsersEntity> usersById) {
+        this.usersById = usersById;
+    }
+
+    @OneToMany(mappedBy = "bankAccountsByAccountusd")
+    public Collection<UsersEntity> getUsersById_0() {
+        return usersById_0;
+    }
+
+    public void setUsersById_0(Collection<UsersEntity> usersById_0) {
+        this.usersById_0 = usersById_0;
+    }
+
+    @OneToMany(mappedBy = "bankAccountsByAccounteur")
+    public Collection<UsersEntity> getUsersById_1() {
+        return usersById_1;
+    }
+
+    public void setUsersById_1(Collection<UsersEntity> usersById_1) {
+        this.usersById_1 = usersById_1;
     }
 }

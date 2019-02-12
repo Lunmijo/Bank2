@@ -6,10 +6,12 @@ import javax.persistence.*;
 @Table(name = "transactions", schema = "public", catalog = "Bank")
 public class TransactionsEntity {
     private long id;
-    private Long sender;
+    private long sender;
     private Long receiver;
     private double sum;
     private String currency;
+    private BankAccountsEntity bankAccountsBySender;
+    private BankAccountsEntity bankAccountsByReceiver;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,12 +25,12 @@ public class TransactionsEntity {
     }
 
     @Basic
-    @Column(name = "sender", nullable = true)
-    public Long getSender() {
+    @Column(name = "sender", nullable = false)
+    public long getSender() {
         return sender;
     }
 
-    public void setSender(Long sender) {
+    public void setSender(long sender) {
         this.sender = sender;
     }
 
@@ -70,8 +72,8 @@ public class TransactionsEntity {
         TransactionsEntity that = (TransactionsEntity) o;
 
         if (id != that.id) return false;
+        if (sender != that.sender) return false;
         if (Double.compare(that.sum, sum) != 0) return false;
-        if (sender != null ? !sender.equals(that.sender) : that.sender != null) return false;
         if (receiver != null ? !receiver.equals(that.receiver) : that.receiver != null) return false;
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) return false;
 
@@ -83,11 +85,31 @@ public class TransactionsEntity {
         int result;
         long temp;
         result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (sender != null ? sender.hashCode() : 0);
+        result = 31 * result + (int) (sender ^ (sender >>> 32));
         result = 31 * result + (receiver != null ? receiver.hashCode() : 0);
         temp = Double.doubleToLongBits(sum);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "sender", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public BankAccountsEntity getBankAccountsBySender() {
+        return bankAccountsBySender;
+    }
+
+    public void setBankAccountsBySender(BankAccountsEntity bankAccountsBySender) {
+        this.bankAccountsBySender = bankAccountsBySender;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "receiver", referencedColumnName = "id", insertable = false, updatable = false)
+    public BankAccountsEntity getBankAccountsByReceiver() {
+        return bankAccountsByReceiver;
+    }
+
+    public void setBankAccountsByReceiver(BankAccountsEntity bankAccountsByReceiver) {
+        this.bankAccountsByReceiver = bankAccountsByReceiver;
     }
 }

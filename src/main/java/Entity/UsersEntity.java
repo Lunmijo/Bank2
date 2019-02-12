@@ -5,18 +5,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users", schema = "public", catalog = "Bank")
 public class UsersEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
     private long id;
-
     private String firstname;
     private String lastname;
     private Long accountuah;
     private Long accountusd;
     private Long accounteur;
+    private BankAccountsEntity bankAccountsByAccountuah;
+    private BankAccountsEntity bankAccountsByAccountusd;
+    private BankAccountsEntity bankAccountsByAccounteur;
 
     public UsersEntity() {
+
     }
 
     public UsersEntity(String firstname, String lastname) {
@@ -56,7 +56,7 @@ public class UsersEntity {
     }
 
     @Basic
-    @Column(name = "accountuah", nullable = true)
+    @Column(name = "accountuah", nullable = true, insertable = false, updatable = false)
     public Long getAccountuah() {
         return accountuah;
     }
@@ -66,7 +66,7 @@ public class UsersEntity {
     }
 
     @Basic
-    @Column(name = "accountusd", nullable = true)
+    @Column(name = "accountusd", nullable = true, insertable = false, updatable = false)
     public Long getAccountusd() {
         return accountusd;
     }
@@ -76,7 +76,7 @@ public class UsersEntity {
     }
 
     @Basic
-    @Column(name = "accounteur", nullable = true)
+    @Column(name = "accounteur", nullable = true, insertable = false, updatable = false)
     public Long getAccounteur() {
         return accounteur;
     }
@@ -111,5 +111,35 @@ public class UsersEntity {
         result = 31 * result + (accountusd != null ? accountusd.hashCode() : 0);
         result = 31 * result + (accounteur != null ? accounteur.hashCode() : 0);
         return result;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "accountuah", referencedColumnName = "id")
+    public BankAccountsEntity getBankAccountsByAccountuah() {
+        return bankAccountsByAccountuah;
+    }
+
+    public void setBankAccountsByAccountuah(BankAccountsEntity bankAccountsByAccountuah) {
+        this.bankAccountsByAccountuah = bankAccountsByAccountuah;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "accountusd", referencedColumnName = "id")
+    public BankAccountsEntity getBankAccountsByAccountusd() {
+        return bankAccountsByAccountusd;
+    }
+
+    public void setBankAccountsByAccountusd(BankAccountsEntity bankAccountsByAccountusd) {
+        this.bankAccountsByAccountusd = bankAccountsByAccountusd;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "accounteur", referencedColumnName = "id")
+    public BankAccountsEntity getBankAccountsByAccounteur() {
+        return bankAccountsByAccounteur;
+    }
+
+    public void setBankAccountsByAccounteur(BankAccountsEntity bankAccountsByAccounteur) {
+        this.bankAccountsByAccounteur = bankAccountsByAccounteur;
     }
 }

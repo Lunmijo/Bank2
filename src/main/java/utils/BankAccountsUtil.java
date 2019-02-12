@@ -1,6 +1,7 @@
 package utils;
 
 import Entity.BankAccountsEntity;
+import Entity.CurrencyratesEntity;
 import Entity.TransactionsEntity;
 import Entity.UsersEntity;
 
@@ -74,7 +75,7 @@ public class BankAccountsUtil {
         try {
             userAccount.setAvailablemoney(currentMoney + Math.abs(sum));
 
-            BankAccountsUtil.saveBankAccount(userAccount);
+            BankAccountsUtil.updateBankAccount(userAccount, Math.abs(sum));
             return true;
         } catch (NullPointerException e) {
             return false;
@@ -93,6 +94,11 @@ public class BankAccountsUtil {
             try {
                 withdrawSum = sum;
                 if (BankAccountsUtil.withdrawUpdateAccount(withdrawSum, userAccount)) {
+                    TransactionsEntity transaction = new TransactionsEntity();
+                    transaction.setSender(userAccount.getId());
+                    transaction.setCurrency(userAccount.getCurrency());
+                    transaction.setSum(withdrawSum);
+                    BankAccountsUtil.saveTransaction(transaction);
                     return withdrawSum;
                 }
             } catch (NullPointerException e) {
@@ -103,6 +109,11 @@ public class BankAccountsUtil {
             rate = CurrencyRates.findRate("1").getUsdtouah();
             withdrawSum = sum * rate;
             if (BankAccountsUtil.withdrawUpdateAccount(sum, userAccount)) {
+                TransactionsEntity transaction = new TransactionsEntity();
+                transaction.setSender(userAccount.getId());
+                transaction.setCurrency(userAccount.getCurrency());
+                transaction.setSum(withdrawSum);
+                BankAccountsUtil.saveTransaction(transaction);
                 return withdrawSum;
             }
             } catch (NullPointerException e) {
@@ -113,6 +124,11 @@ public class BankAccountsUtil {
                 rate = CurrencyRates.findRate("1").getEurtouah();
                 withdrawSum = sum * rate;
                 if (BankAccountsUtil.withdrawUpdateAccount(sum, userAccount)) {
+                    TransactionsEntity transaction = new TransactionsEntity();
+                    transaction.setSender(userAccount.getId());
+                    transaction.setCurrency(userAccount.getCurrency());
+                    transaction.setSum(withdrawSum);
+                    BankAccountsUtil.saveTransaction(transaction);
                     return withdrawSum;
                 }
             } catch (NullPointerException e) {
@@ -135,13 +151,13 @@ public class BankAccountsUtil {
         }
     }
 
-    private static boolean updateBankAccount(BankAccountsEntity userAccount, double withdrawSum) {
+    private static boolean updateBankAccount(BankAccountsEntity userAccount, double sum) {
         try {
                 BankAccountsUtil.saveBankAccount(userAccount);
 
                 TransactionsEntity accountTransaction = new TransactionsEntity();
                 accountTransaction.setSender(userAccount.getId());
-                accountTransaction.setSum(withdrawSum);
+                accountTransaction.setSum(sum);
                 accountTransaction.setCurrency(userAccount.getCurrency());
                 BankAccountsUtil.saveTransaction(accountTransaction);
 
@@ -149,6 +165,26 @@ public class BankAccountsUtil {
         } catch (NullPointerException e) {
             return false;
         }
+    }
+
+    private static boolean updateBankAccount(BankAccountsEntity to, BankAccountsEntity from, double sum, double fromSum, double toSum) {
+        try {
+            to.setAvailablemoney(toSum);
+            from.setAvailablemoney(fromSum);
+            BankAccountsUtil.saveBankAccount(to);
+            BankAccountsUtil.saveBankAccount(from);
+
+            TransactionsEntity accountTransaction = new TransactionsEntity();
+            accountTransaction.setSender(from.getId());
+            accountTransaction.setReceiver(to.getId());
+            accountTransaction.setSum(sum);
+            accountTransaction.setCurrency(from.getCurrency());
+            BankAccountsUtil.saveTransaction(accountTransaction);
+
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return false;
     }
 
     private static BankAccountsEntity findAccountByCurrency(UsersEntity user, String currency) {
@@ -194,10 +230,41 @@ public class BankAccountsUtil {
     public static BankAccountsEntity findAccount(long id) {
         Query query = Manager.getEm().createQuery("SELECT bankAccount FROM BankAccountsEntity bankAccount WHERE id = ?1", BankAccountsEntity.class);
         query.setParameter(1, id);
-        ArrayList<BankAccountsEntity> bankAccountsEntities = (ArrayList<BankAccountsEntity>) query.getResultList();
-        if (bankAccountsEntities.size() > 0) {
-            return bankAccountsEntities.get(0);
+        ArrayList<BankAccountsEntity> resultList = (ArrayList<BankAccountsEntity>) query.getResultList();
+        if (resultList.size() > 0) {
+            return resultList.get(0);
         }
         return null;
+    }
+
+    public static boolean convertMoney(BankAccountsEntity from, BankAccountsEntity to, double sum) {
+        double resultFrom = from.getAvailablemoney() - sum;
+        if (resultFrom >= 0) {
+            CurrencyratesEntity rates = CurrencyRates.findRate("1");
+            double rate = 0;
+            if (from.getCurrency().equals("uah") && to.getCurrency().equals("usd")) {
+                rate = rates.getUahtousd();
+            } else if (from.getCurrency().equals("usd") && to.getCurrency().equals("uah")) {
+                rate = rates.getUsdtouah();
+
+            } else if (from.getCurrency().equals("uah") && to.getCurrency().equals("eur")) {
+                rate = rates.getUahtoeur();
+
+            } else if (from.getCurrency().equals("eur") && to.getCurrency().equals("uah")) {
+                rate = rates.getEurtouah();
+
+            } else if (from.getCurrency().equals("usd") && to.getCurrency().equals("eur")) {
+                rate = rates.getUsdtoeur();
+
+            } else if (from.getCurrency().equals("eur") && to.getCurrency().equals("usd")) {
+                rate = rates.getEurtousd();
+            }
+            double resultSum = sum * rate;
+            double resultTo = to.getAvailablemoney() + resultSum;
+            BankAccountsUtil.updateBankAccount(to, from, sum, resultFrom, resultTo);
+            return true;
+        }
+
+        return false;
     }
 }

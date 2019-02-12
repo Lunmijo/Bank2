@@ -1,9 +1,14 @@
 package consoleView;
 
 import Entity.BankAccountsEntity;
+import Entity.TransactionsEntity;
 import utils.BankAccountsUtil;
+import utils.CurrencyRates;
+import utils.TransactionsUtil;
 import utils.UsersUtil;
 
+import javax.jws.soap.SOAPBinding;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ConsoleOperations {
@@ -87,15 +92,48 @@ public class ConsoleOperations {
     }
 
     public static void checkTransactionsHistory() {
+        ArrayList<TransactionsEntity> transactions = TransactionsUtil.findTransactions(UsersUtil.findUser(UsersUtil.getUserID()).getAccountuah());
+        transactions.addAll(TransactionsUtil.findTransactions(UsersUtil.findUser(UsersUtil.getUserID()).getAccounteur()));
+        transactions.addAll(TransactionsUtil.findTransactions(UsersUtil.findUser(UsersUtil.getUserID()).getAccountusd()));
 
+        for (int i = 0; i < transactions.size(); i++) {
+            System.out.println("ID: " + transactions.get(i).getId());
+            System.out.println("Currency: " + transactions.get(i).getCurrency());
+            System.out.println("Sum: " + transactions.get(i).getSum());
+            System.out.println("Sender: " + transactions.get(i).getSender());
+            if (transactions.get(i).getReceiver() == null) {
+                System.out.println("ATM Transaction");
+            }
+            else {
+                System.out.println("Receiver: " + transactions.get(i).getReceiver());
+            }
+            System.out.println(" ");
+        }
     }
 
     public static void checkRates() {
-
+        System.out.println(CurrencyRates.getStringRate("1"));
     }
 
     public static void convertMoney() {
+        System.out.println("Enter currency from account you want to convert money: uah, eur, usd");
+        String from = scanner.nextLine();
+        System.out.println("Enter currency to account you want to convert money: uah, eur, usd");
+        String to = scanner.nextLine();
+        System.out.println("Enter sum in currency from account");
+        double sum = scanner.nextDouble();
+        boolean result = BankAccountsUtil.convertMoney(BankAccountsUtil.findAccountByCurrency(from), BankAccountsUtil.findAccountByCurrency(to), sum);
+        if (result) {
+            System.out.println("Converted successful!");
+        }
+        else {
+            System.out.println("Oops, something went wrong!");
+        }
+    }
 
+    public static void viewInfo() {
+
+        System.out.println(UsersUtil.viewInfo());
     }
 
 }

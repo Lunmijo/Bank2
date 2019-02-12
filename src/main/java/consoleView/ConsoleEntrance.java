@@ -49,7 +49,10 @@ public class ConsoleEntrance {
             System.out.println(UsersUtil.returnUserInfo(user));
             return true;
         }
-        return false;
+        else {
+            UsersUtil.setUserID(-1);
+            return false;
+        }
     }
 
 }
